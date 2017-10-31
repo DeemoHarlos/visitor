@@ -11,40 +11,23 @@ log.printLog('info','Starting server ...')
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var visitorSchema = new Schema({
-  ip: {
-  	type: String
-  },
-  port: {
-  	type: Number
-  },
-  time: {
-  	type: Date
-  },
-  protocol: {
-  	type: String
-  },
-  reqHost: {
-  	type: String
-  },
-  resource: {
-  	type: String
-  },
-  website: {
-  	type: String
-  },
-  userAgent: {
-  	type: String
-  }
+	ip: {type: String},
+	port: {type: Number},
+	time: {type: Date},
+	protocol: {type: String},
+	reqHost: {type: String},
+	resource: {type: String},
+	website: {type: String},
+	userAgent: {type: String}
 })
 var Visitor = mongoose.model('Visitor', visitorSchema)
 
 log.printLog('info','Connecting to database ...')
 mongoose.connect(database, function (err, res) {
-  if (err) {
-    log.printLog('error','Error connecting to: ' + database + '. ' + err)
-  } else {
-    log.printLog('info','Succeeded connected to: ' + database)
-  }
+	if (err)
+		log.printLog('error','Error connecting to: ' + database + '. ' + err)
+	else
+		log.printLog('info','Succeeded connected to: ' + database)
 })
 
 // for parsing application/json
@@ -73,9 +56,16 @@ app.post('/',(req,res)=>{
 	newVisitor.save((err, course)=>{
 		if (err) {
 			log.printLog('error',err)
-			return res.status(403).send(err)
+			res.status(403).send(err)
 		}
-		res.status(200).send(newVisitor);
+		else res.status(200).send(newVisitor);
+	})
+})
+
+app.get('/',(req,res)=>{
+	Visitor.find({}, function (err, visitor) {
+		if (err) { return res.status(403).send(err) }
+		res.status(200).json(visitor)
 	})
 })
 
