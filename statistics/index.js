@@ -138,9 +138,9 @@ function toggle(i,h){
 function update(){
 	var req = new XMLHttpRequest()
 	var server = $('#url').value
-	req.open('GET',server)
+	req.open('POST',server)
 	req.setRequestHeader('Content-Type','application/X-www-form-urlencoded')
-	req.send()
+	req.send('key='+$('#key').value)
 	req.onreadystatechange = function () {
 		if(req.readyState === XMLHttpRequest.DONE){
 			console.log(server + ' responded with status ' + req.status)

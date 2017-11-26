@@ -3,8 +3,10 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser');
 const log = require('./logger')
+const bcrypt = require('bcrypt')
 const port = argv.p || 80
 const database = (argv.d || '127.0.0.1:27017')
+const mykey = '$2a$10$HzFpcQmmIOd9iDiDohCuqOfIEWYFHb9BKZgZsDlovACjy7BaEdfWi'
 
 log.printLog('info','Starting server ...')
 
@@ -62,7 +64,9 @@ app.post('/',(req,res)=>{
 	})
 })
 
-app.get('/',(req,res)=>{
+app.post('/get',(req,res)=>{
+	if (!bcrypt.compareSync(req.body.key,mykey))
+		return res.status(403).send('Forbidden.')
 	Visitor.find({}, function (err, visitor) {
 		if (err) { return res.status(403).send(err) }
 		res.status(200).json(visitor)
