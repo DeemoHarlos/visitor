@@ -40,7 +40,7 @@ function parseDate(d){
 function parseIp(ip){
 	var ipv4Regex = /^(\d{1,3}\.){3,3}\d{1,3}$/
 	var ipv6Regex = /^(::)?(((\d{1,3}\.){3}(\d{1,3}){1})?([0-9a-f]){0,4}:{0,2}){1,8}(::)?$/i
-	var nip
+	var nip = ip
 	if(ip.slice(0,7)=='::ffff:')nip = ip.slice(7)
 	nip = nip.split(".").map(x=>('<span>'+x+'</span>')).join(".")
 	return nip
